@@ -2,7 +2,7 @@ const express = require('express');
 
 
 const app = express()
-const port = 3000
+const PORT = 3000
 
 
 
@@ -24,7 +24,7 @@ app.get("/connexion", async (req, res) => {
 })
 
 
-app.listen(3001, function () {
+app.listen(PORT, function () {
 
 
 
