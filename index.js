@@ -1,26 +1,39 @@
+
+
 const express = require('express');
+const {Sequelize, DataTypes} = require('sequelize');
+const Modele_eleve = require('./Modeles/eleve.js')
 
 
 const app = express()
 const PORT = 3000
 
 
+const sequelize = new Sequelize({
+    username: 'root',
+    password: '',
+    database: 'RL',
+    host: 'localhost',
+    dialect: 'mysql'
+  });
 
+
+  sequelize
+    .authenticate()
+    .then(() => {
+      console.log('Connecté à la base de données MySQL.');
+    })
+    .catch((error) => {
+      console.error('Erreur de connexion :', error);
+    });
+
+    const eleve = Modele_eleve(sequelize,DataTypes)
+    
 
 app.get("/connexion", async (req, res) => {
 
-    res.header("Access-Control-Allow-Origin", "*");
-    var User = await db.collection('clients').findOne({ mail: req.query.email, password: req.query.password })
 
-    if (User == null) {
-        res.json({ connexion: "non", User })
-    }
-    else {
-        res.header("Access-Control-Allow-Origin", "*");
-
-        res.json({ connexion: "oui", User })
-    }
-
+      
 })
 
 
