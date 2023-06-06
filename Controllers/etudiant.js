@@ -45,7 +45,7 @@ exports.newEtudiant=(req,res)=>{
                     {nom:req.body.nom,
                         prenom:req.body.prenom,
                         date_naissance:req.body.date_naissance,
-                        classe:req.body.classe,
+                        promotion:req.body.promotion,
                         email:req.body.email,
                         telephone:req.body.telephone}
                     ).then(etudiant=>{

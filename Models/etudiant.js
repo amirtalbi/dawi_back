@@ -19,8 +19,8 @@
         type: Datatypes.DATEONLY,
         allowNull: false
     },
-    classe: {
-        type: Datatypes.STRING,
+    promotion: {
+        type: Datatypes.INTEGER ,
         allowNull: false
     }
     }, {
