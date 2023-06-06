@@ -17,11 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      eleveId: {
+      etudiantId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'Eleve',
+          model: 'Etudiants',
           key: 'id'
         }
       },
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'Enseignant',
+          model: 'Enseignants',
           key: 'id'
         }
       }
@@ -41,8 +41,8 @@ module.exports = (sequelize, DataTypes) => {
   
     Note.associate = (models) => {
       Note.belongsTo(models.Eleve, {
-        foreignKey: 'eleveId',
-        as: 'eleve'
+        foreignKey: 'etudiantId',
+        as: 'etudiant'
       });
       Note.belongsTo(models.Enseignant, {
         foreignKey: 'enseignantId',

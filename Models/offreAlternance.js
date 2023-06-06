@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'Entreprise',
+          model: 'Entreprises',
           key: 'id'
         }
       }
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     OffreAlternance.associate = (models) => {
       OffreAlternance.belongsTo(models.Entreprise, {
         foreignKey: 'entrepriseId',
-        as: 'entreprise'
+        as: 'entreprises'
       });
     };
   

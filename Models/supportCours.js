@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const SupportCours = sequelize.define('SupportCours', {
+    const SupportCours = sequelize.define('SupportCour', {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'Enseignant',
+          model: 'Enseignants',
           key: 'id'
         }
       }
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     SupportCours.associate = (models) => {
       SupportCours.belongsTo(models.Enseignant, {
         foreignKey: 'enseignantId',
-        as: 'enseignant'
+        as: 'enseignants'
       });
     };
   

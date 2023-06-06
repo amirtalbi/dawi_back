@@ -1,7 +1,7 @@
     module.exports =(sequelize,Datatypes)=>
 
     {
-        return sequelize.define('Eleve', {
+        return sequelize.define('Etudiant', {
     id: {
         type: Datatypes.INTEGER,
         autoIncrement: true,
@@ -25,7 +25,7 @@
     }
     }, {
         timestamps: true,
-        createdAt : "creation",
+        createdAt : "cree",
         updatedAt : "modifie"
         // Désactive les colonnes `updatedAt` et `createdAt`
     });
