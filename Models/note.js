@@ -34,9 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     }, {
-      timestamps: true,
-      createdAt: 'creation',
-      updatedAt: 'modifie'
+      timestamps:false
     });
   
     Note.associate = (models) => {

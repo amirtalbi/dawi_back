@@ -30,9 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     }, {
-      timestamps: true,
-      createdAt: 'creation',
-      updatedAt: 'modifie'
+      timestamps: false
     });
   
     SupportCours.associate = (models) => {

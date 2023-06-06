@@ -24,10 +24,7 @@
         allowNull: false
     }
     }, {
-        timestamps: true,
-        createdAt : "cree",
-        updatedAt : "modifie"
-        // Désactive les colonnes `updatedAt` et `createdAt`
+        timestamps: false
     });
 
     };

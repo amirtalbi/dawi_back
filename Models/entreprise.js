@@ -29,9 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       }
     }, {
-      timestamps: true,
-      createdAt: 'creation',
-      updatedAt: 'modifie'
+      timestamps: false
     });
   
     return Entreprise;
