@@ -7,23 +7,23 @@ exports.getOneEntreprise=(req,res)=>{
   Entreprise.findByPk(id).then(entreprise=>{
       if(entreprise===null){
           const message=`L'entreprise ${id} n'existe pas`
-          res.status(400).json({message,data:error})
+          return res.status(400).json({message,data:error})
       }
       const message=`L'entreprise ${id} a été récuperé`
-      res.status(201).json({message,data:entreprise})
+      return res.status(201).json({message,data:entreprise})
   }).catch(error=>{
       const message=`L'entreprise ${id} n'a pas pu etre récuperé. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }
 
 exports.getAllEntreprises=(req,res)=>{
   Entreprise.findAll().then(entreprise=>{
       const message="Liste des Entreprises:"
-      res.json({message,data:entreprise})
+      return res.json({message,data:entreprise})
   }).catch(error=>{
       const message=`La liste des Entreprises n'a pas pu être recupérer. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }
 
@@ -38,7 +38,7 @@ exports.newEntreprise=(req,res)=>{
             }).then(user=>{
                 if(user===null){
                     const message=`L'utilisateur n'est pas créer.`
-                    res.status(404).json({message})
+                    return res.status(404).json({message})
                 }
                 Entreprise.create(
                     {nom:req.body.nom,
@@ -50,25 +50,25 @@ exports.newEntreprise=(req,res)=>{
                     ).then(entreprise=>{
                     if(entreprise===null){
                         const message=`L'entreprise n'est pas créer.`
-                        res.status(404).json({message})
+                        return res.status(404).json({message})
                     }
                     iud=entreprise.id
                     User.update(iud,{where:{id:user.id}}).then(_=>{
                         const message=`L'entreprise a été crée  id:${entreprise.id}`
-                        res.json({message,data:entreprise})
+                        return res.json({message,data:entreprise})
                     })
                 }).catch(error=>{
                     const message=`L'entreprise n'a pas pu être créer. Réessayez dans quelques instants.`
-                    res.status(500).json({message,data:error})
+                    return res.status(500).json({message,data:error})
             })
             }).catch(error=>{
                 const message=`L'utilisateur n'a pas pu être créer. Réessayez dans quelques instants.`
-                res.status(501).json({message,data:error})
+                return res.status(501).json({message,data:error})
           })
         }
     ).catch(error=>{
         const message=`Une erreur a été rencontré. Réessayez dans quelques instants.`
-        res.status(500).json({message,data:error})
+        return res.status(500).json({message,data:error})
   })
 }
 
@@ -78,14 +78,14 @@ exports.updateEntreprise=(req,res)=>{
       return Entreprise.findByPk(id).then(entreprise=>{
           if(entreprise.id===null){
               const message=`L'entreprise n'existe pas.`
-              res.status(404).json({message})
+              return res.status(404).json({message})
           }
           const message=`L'entreprise ayant pour id: ${entreprise.id} a été mis à jour `
-          res.status(201).json({message,data:entreprise})
+          return res.status(201).json({message,data:entreprise})
       })
   }).catch(error=>{
       const message=`L'entreprise n'a pas pu être modifié. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})})
+      return res.status(500).json({message,data:error})})
 }
 
 exports.deleteEntreprise=(req,res)=>{
@@ -93,12 +93,12 @@ exports.deleteEntreprise=(req,res)=>{
   Entreprise.findByPk(id).then(entreprise=>{
       if(entreprise===null){
           const message=`L'entreprise n'existe pas.`
-          res.status(404).json({message})
+          return res.status(404).json({message})
       }
       const message=`L'entreprise ${id} à bien été supprimé`
       return Entreprise.destroy(id).then(res.status(201).json({message,data:entreprise}))
   }).catch(error=>{
       const message=`L'entreprise n'a pas pu etre supprimé. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }

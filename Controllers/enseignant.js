@@ -7,23 +7,23 @@ exports.getOneEnseignant=(req,res)=>{
   Enseignant.findByPk(id).then(enseignant=>{
       if(enseignant===null){
           const message=`L'enseignant ${id} n'existe pas`
-          res.status(400).json({message,data:error})
+          return res.status(400).json({message,data:error})
       }
       const message=`L'enseignant ${id} a été récuperé`
-      res.status(201).json({message,data:enseignant})
+      return res.status(201).json({message,data:enseignant})
   }).catch(error=>{
       const message=`L'enseignant ${id} n'a pas pu etre récuperé. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }
 
 exports.getAllEnseignants=(req,res)=>{
   Enseignant.findAll().then(enseignant=>{
       const message="Liste des Enseignants:"
-      res.json({message,data:enseignant})
+      return res.json({message,data:enseignant})
   }).catch(error=>{
       const message=`La liste des Enseignants n'a pas pu être recupérer. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }
 exports.newEnseignant=(req,res)=>{
@@ -37,7 +37,7 @@ exports.newEnseignant=(req,res)=>{
             }).then(user=>{
                 if(user===null){
                     const message=`L'utilisateur n'est pas créer.`
-                    res.status(404).json({message})
+                    return res.status(404).json({message})
                 }
                 Enseignant.create(
                     {nom:req.body.nom,
@@ -48,12 +48,12 @@ exports.newEnseignant=(req,res)=>{
                     ).then(enseignant=>{
                     if(enseignant===null){
                         const message=`L'enseignant n'est pas créer.`
-                        res.status(404).json({message})
+                        return res.status(404).json({message})
                     }
                     iud=enseignant.id
                     User.update(iud,{where:{id:user.id}}).then(_=>{
                         const message=`L'enseignant a été crée  id:${enseignant.id}`
-                        res.json({message,data:enseignant})
+                        return res.json({message,data:enseignant})
                     })
                 }).catch(error=>{
                     const message=`L'enseignant n'a pas pu être créer. Réessayez dans quelques instants.`
@@ -61,12 +61,12 @@ exports.newEnseignant=(req,res)=>{
             })
             }).catch(error=>{
                 const message=`L'utilisateur n'a pas pu être créer. Réessayez dans quelques instants.`
-                res.status(501).json({message,data:error})
+                return res.status(501).json({message,data:error})
           })
         }
     ).catch(error=>{
         const message=`Une erreur a été rencontré. Réessayez dans quelques instants.`
-        res.status(500).json({message,data:error})
+        return res.status(500).json({message,data:error})
   })
 }
 
@@ -76,14 +76,14 @@ exports.updateEnseignant=(req,res)=>{
       return Enseignant.findByPk(id).then(enseignant=>{
           if(enseignant.id===null){
               const message=`L'enseignant n'existe pas.`
-              res.status(404).json({message})
+              return res.status(404).json({message})
           }
           const message=`L'enseignant ayant pour id: ${enseignant.id} a été mis à jour `
-          res.status(201).json({message,data:enseignant})
+          return res.status(201).json({message,data:enseignant})
       })
   }).catch(error=>{
       const message=`L'enseignant n'a pas pu être modifié. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})})
+      return res.status(500).json({message,data:error})})
 }
 
 exports.deleteEnseignant=(req,res)=>{
@@ -91,12 +91,12 @@ exports.deleteEnseignant=(req,res)=>{
   Enseignant.findByPk(id).then(enseignant=>{
       if(enseignant===null){
           const message=`L'enseignant n'existe pas.`
-          res.status(404).json({message})
+          return res.status(404).json({message})
       }
       const message=`L'enseignant ${id} à bien été supprimé`
       return Enseignant.destroy(id).then(res.status(201).json({message,data:enseignant}))
   }).catch(error=>{
       const message=`L'enseignant n'a pas pu etre supprimé. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }

@@ -6,23 +6,23 @@ exports.getOneOffreAlternance=(req,res)=>{
   Offre.findByPk(id).then(offre=>{
       if(offre===null){
           const message=`L'offre ${id} n'existe pas`
-          res.status(400).json({message,data:error})
+          return res.status(400).json({message,data:error})
       }
       const message=`L'offre ${id} a été récuperé`
-      res.status(201).json({message,data:offre})
+      return res.status(201).json({message,data:offre})
   }).catch(error=>{
       const message=`L'offre ${id} n'a pas pu etre récuperé. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }
 
 exports.getAllOffreAlternances=(req,res)=>{
   Offre.findAll().then(offre=>{
       const message="Liste des Offres:"
-      res.json({message,data:offre})
+      return res.json({message,data:offre})
   }).catch(error=>{
       const message=`La liste des Offres n'a pas pu être recupérer. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }
 
@@ -30,13 +30,13 @@ exports.newOffreAlternance=(req,res)=>{
   Offre.create(req.body).then(offre=>{
       if(offre===null){
           const message=`L'offre n'est pas créer.`
-          res.status(404).json({message})
+          return res.status(404).json({message})
       }
       const message=`L'offre a été crée  id:${offre.id}`
-      res.json({message,data:offre})
+      return res.json({message,data:offre})
   }).catch(error=>{
       const message=`L'offre n'a pas pu être créer. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
 })
 }
 
@@ -46,14 +46,14 @@ exports.updateOffreAlternance=(req,res)=>{
       return Offre.findByPk(id).then(offre=>{
           if(offre.id===null){
               const message=`L'offre n'existe pas.`
-              res.status(404).json({message})
+              return res.status(404).json({message})
           }
           const message=`L'offre ayant pour id: ${offre.id} a été mis à jour `
-          res.status(201).json({message,data:offre})
+          return res.status(201).json({message,data:offre})
       })
   }).catch(error=>{
       const message=`L'offre n'a pas pu être modifié. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})})
+      return res.status(500).json({message,data:error})})
 }
 
 exports.deleteOffreAlternance=(req,res)=>{
@@ -61,12 +61,12 @@ exports.deleteOffreAlternance=(req,res)=>{
   Offre.findByPk(id).then(offre=>{
       if(offre===null){
           const message=`L'offre n'existe pas.`
-          res.status(404).json({message})
+          return res.status(404).json({message})
       }
       const message=`L'offre ${id} à bien été supprimé`
       return Offre.destroy(id).then(res.status(201).json({message,data:offre}))
   }).catch(error=>{
       const message=`L'offre n'a pas pu etre supprimé. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }

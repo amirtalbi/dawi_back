@@ -6,23 +6,23 @@ exports.getOneSupportCours=(req,res)=>{
   SupportCours.findByPk(id).then(supportCours=>{
       if(supportCours===null){
           const message=`Le support de cours ${id} n'existe pas`
-          res.status(400).json({message,data:error})
+          return res.status(400).json({message,data:error})
       }
       const message=`Le support de cours ${id} a été récuperé`
-      res.status(201).json({message,data:supportCours})
+      return res.status(201).json({message,data:supportCours})
   }).catch(error=>{
       const message=`Le support de cours ${id} n'a pas pu etre récuperé. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }
 
 exports.getAllSupportCourss=(req,res)=>{
   SupportCours.findAll().then(supportCours=>{
       const message="Liste des SupportCourss:"
-      res.json({message,data:supportCours})
+      return res.json({message,data:supportCours})
   }).catch(error=>{
       const message=`La liste des SupportCourss n'a pas pu être recupérer. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }
 
@@ -30,13 +30,13 @@ exports.newSupportCours=(req,res)=>{
   SupportCours.create(req.body).then(supportCours=>{
       if(supportCours===null){
           const message=`Le support de cours n'est pas créer.`
-          res.status(404).json({message})
+          return res.status(404).json({message})
       }
       const message=`Le support de cours a été crée  id:${supportCours.id}`
-      res.json({message,data:supportCours})
+      return res.json({message,data:supportCours})
   }).catch(error=>{
       const message=`Le support de cours n'a pas pu être créer. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
 })
 }
 
@@ -46,14 +46,14 @@ exports.updateSupportCours=(req,res)=>{
       return SupportCours.findByPk(id).then(supportCours=>{
           if(supportCours.id===null){
               const message=`Le support de cours n'existe pas.`
-              res.status(404).json({message})
+              return res.status(404).json({message})
           }
           const message=`Le support de cours ayant pour id: ${supportCours.id} a été mis à jour `
-          res.status(201).json({message,data:supportCours})
+          return res.status(201).json({message,data:supportCours})
       })
   }).catch(error=>{
       const message=`Le support de cours n'a pas pu être modifié. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})})
+      return res.status(500).json({message,data:error})})
 }
 
 exports.deleteSupportCours=(req,res)=>{
@@ -61,12 +61,12 @@ exports.deleteSupportCours=(req,res)=>{
   SupportCours.findByPk(id).then(supportCours=>{
       if(supportCours===null){
           const message=`Le support de cours n'existe pas.`
-          res.status(404).json({message})
+          return res.status(404).json({message})
       }
       const message=`Le support de cours ${id} à bien été supprimé`
       return SupportCours.destroy(id).then(res.status(201).json({message,data:supportCours}))
   }).catch(error=>{
       const message=`Le support de cours n'a pas pu etre supprimé. Réessayez dans quelques instants.`
-      res.status(500).json({message,data:error})
+      return res.status(500).json({message,data:error})
   })
 }
