@@ -2,7 +2,7 @@ const offre = require('../Models/offreAlternance')
 const {Offre}=require('../db/sequelize')
 
 exports.getOneOffreAlternance=(req,res)=>{
-  const id=params.id
+  const id=req.params.id
   Offre.findByPk(id).then(offre=>{
       if(offre===null){
           const message=`L'offre ${id} n'existe pas`

@@ -2,7 +2,7 @@ const supportCours = require('../Models/supportCours')
 const {SupportCours}=require('../db/sequelize')
 
 exports.getOneSupportCours=(req,res)=>{
-  const id=params.id
+  const id=req.params.id
   SupportCours.findByPk(id).then(supportCours=>{
       if(supportCours===null){
           const message=`Le support de cours ${id} n'existe pas`
