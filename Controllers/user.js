@@ -7,12 +7,12 @@ exports.login=(req,res)=>{
     User.findOne({where:{numero_etudiant:numero_etudiant}}).then(user=>{
         if(!user){
             const message=`L'utilisateur demandé n'existe pas`
-            res.status(400).json({message,data:error})
+            res.status(400).json({message})
         }
         bcrypt.compare(req.body.password,user.password).then(valide=>{
             if(!valide){
                 const message=`Le mot de passe n'est pas valide`
-                res.status(401).json({message,data:error})
+                res.status(401).json({message})
             }
             const message=`L'utilisateur a été récuperé`
             res.status(201).json({message,data:user})
