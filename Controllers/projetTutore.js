@@ -2,7 +2,7 @@ const projetTutore = require('../Models/projetTutore')
 const {ProjetTutore}=require('../db/sequelize')
 
 exports.getOneProjetTutore=(req,res)=>{
-  const id=params.id
+  const id=req.params.id
   ProjetTutore.findByPk(id).then(projetTutore=>{
       if(projetTutore===null){
           const message=`Le projet tutoré ${id} n'existe pas`

@@ -3,7 +3,7 @@ const {Enseignant,User}=require('../db/sequelize')
 const bcrypt = require('bcrypt')
 
 exports.getOneEnseignant=(req,res)=>{
-  const id=params.id
+  const id=req.params.id
   Enseignant.findByPk(id).then(enseignant=>{
       if(enseignant===null){
           const message=`L'enseignant ${id} n'existe pas`

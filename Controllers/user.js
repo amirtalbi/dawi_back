@@ -3,13 +3,14 @@ const {User}=require('../db/sequelize')
 const bcrypt = require('bcrypt')
 
 exports.login=(req,res)=>{
-    const numero_etudiant=req.body.numero_etudiant
+    const numero_etudiant=req.params.numero_etudiant
+    const password=req.params.password;
     User.findOne({where:{numero_etudiant:numero_etudiant}}).then(user=>{
         if(!user){
             const message=`L'utilisateur demandé n'existe pas`
             res.status(400).json({message})
         }
-        bcrypt.compare(req.body.password,user.password).then(valide=>{
+        bcrypt.compare(password,user.password).then(valide=>{
             if(!valide){
                 const message=`Le mot de passe n'est pas valide`
                 res.status(401).json({message})
@@ -24,7 +25,7 @@ exports.login=(req,res)=>{
   }
 
 exports.getOneUser=(req,res)=>{
-  const id=params.id
+  const id=req.params.id
   User.findByPk(id).then(user=>{
       if(user===null){
           const message=`L'utilisateur ${id} n'existe pas`

@@ -2,7 +2,7 @@ const note = require('../Models/note')
 const {Note}=require('../db/sequelize')
 
 exports.getOneNote=(req,res)=>{
-  const id=params.id
+  const id=req.params.id
   Note.findByPk(id).then(note=>{
       if(note===null){
           const message=`La note ${id} n'existe pas`
