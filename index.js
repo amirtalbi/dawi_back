@@ -3,6 +3,7 @@
 const express=require('express')
 const sequelize=require('./db/sequelize')
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app=express()
 const PORT =3000
 
@@ -16,6 +17,7 @@ const projetTutoreRoutes=require('./Routes/projetTutore')
 const supportCoursRoutes=require('./Routes/supportCours')
 const userRoutes=require('./Routes/user')
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use('',etudiantRoutes)
 app.use('',enseignantRoutes)

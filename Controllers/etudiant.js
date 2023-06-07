@@ -33,7 +33,7 @@ exports.newEtudiant=(req,res)=>{
         hashedPassword=>{
             User.create({
                 numero:req.body.numero,
-                login:req.body.login,
+                numero_etudiant:req.body.numero_etudiant,
                 password:hashedPassword,
                 role:req.body.role
             }).then(user=>{
@@ -53,8 +53,8 @@ exports.newEtudiant=(req,res)=>{
                         const message=`L'etudiant n'est pas créer.`
                         res.status(404).json({message})
                     }
-                    iud=etudiant.id
-                    User.update(iud,{where:{id:user.id}}).then(_=>{
+                    uid=etudiant.id
+                    User.update({uid},{where:{id:user.id}}).then(_=>{
                         const message=`L'etudiant a été crée  id:${etudiant.id}`
                         res.json({message,data:etudiant})
                     })

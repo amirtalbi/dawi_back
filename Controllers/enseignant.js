@@ -31,7 +31,7 @@ exports.newEnseignant=(req,res)=>{
         hashedPassword=>{
             User.create({
                 numero:req.body.numero,
-                login:req.body.login,
+                numero_etudiant:req.body.numero_etudiant,
                 password:hashedPassword,
                 role:req.body.role
             }).then(user=>{

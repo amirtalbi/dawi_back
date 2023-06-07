@@ -3,13 +3,13 @@ const {User}=require('../db/sequelize')
 const bcrypt = require('bcrypt')
 
 exports.login=(req,res)=>{
-    const login=req.body.login
-    User.findOne({where:{login:login}}).then(user=>{
+    const numero_etudiant=req.body.numero_etudiant
+    User.findOne({where:{numero_etudiant:numero_etudiant}}).then(user=>{
         if(!user){
             const message=`L'utilisateur demandé n'existe pas`
             res.status(400).json({message,data:error})
         }
-        bcrypt.compare(req.body.login,user.password).then(valide=>{
+        bcrypt.compare(req.body.password,user.password).then(valide=>{
             if(!valide){
                 const message=`Le mot de passe n'est pas valide`
                 res.status(401).json({message,data:error})
@@ -17,6 +17,9 @@ exports.login=(req,res)=>{
             const message=`L'utilisateur a été récuperé`
             res.status(201).json({message,data:user})
         })
+    }).catch(error=>{
+        const message=`L'utilisateur n'a pas pu etre récuperé. Réessayez dans quelques instants.`
+        res.status(500).json({message,data:error})
     })
   }
 
@@ -50,7 +53,7 @@ exports.newUser=(req,res)=>{
         hashedPassword=>{
             User.create({
                 numero:req.body.numero,
-                login:req.body.login,
+                numero_etudiant:req.body.numero_etudiant,
                 password:hashedPassword,
                 role:req.body.role,
                 uid:req.body.uid
@@ -78,7 +81,7 @@ exports.updateUser=(req,res)=>{
     hashedPassword=>{
         User.update({
             numero:req.body.numero,
-            login:req.body.login,
+            numero_etudiant:req.body.numero_etudiant,
             password:hashedPassword,
             role:req.body.role,
             uid:req.body.uid
