@@ -8,9 +8,11 @@ exports.getOneEnseignant=(req,res)=>{
       if(enseignant===null){
           const message=`L'enseignant ${id} n'existe pas`
           return res.status(400).json({message,data:error})
+      }else{
+        const message=`L'enseignant ${id} a été récuperé`
+        return res.status(201).json({message,data:enseignant})
       }
-      const message=`L'enseignant ${id} a été récuperé`
-      return res.status(201).json({message,data:enseignant})
+
   }).catch(error=>{
       const message=`L'enseignant ${id} n'a pas pu etre récuperé. Réessayez dans quelques instants.`
       return res.status(500).json({message,data:error})
@@ -33,7 +35,7 @@ exports.newEnseignant=(req,res)=>{
                 numero:req.body.numero,
                 numero_etudiant:req.body.numero_etudiant,
                 password:hashedPassword,
-                role:req.body.role
+                role:"enseignant"
             }).then(user=>{
                 if(user===null){
                     const message=`L'utilisateur n'est pas créer.`
@@ -50,7 +52,7 @@ exports.newEnseignant=(req,res)=>{
                         const message=`L'enseignant n'est pas créer.`
                         return res.status(404).json({message})
                     }
-                    iud=enseignant.id
+                    uid=enseignant.id
                     User.update(iud,{where:{id:user.id}}).then(_=>{
                         const message=`L'enseignant a été crée  id:${enseignant.id}`
                         return res.json({message,data:enseignant})
@@ -72,14 +74,26 @@ exports.newEnseignant=(req,res)=>{
 
 exports.updateEnseignant=(req,res)=>{
   const id=req.params.id
-  Enseignant.update(req.body,{where:{id:id}}).then(()=>{
+  Enseignant.update({nom:req.body.nom,
+    prenom:req.body.prenom,
+    matiere:req.body.matiere,
+    email:req.body.email,
+    telephone:req.body.telephone},{where:{id:id}}).then(()=>{
       return Enseignant.findByPk(id).then(enseignant=>{
+        if(!req.body.password){
+            bcrypt.hash(req.body.password,10).then(
+                hashedPassword=>{
+                    User.update({password:hashedPassword},{where:{id:enseignant.uid}})
+                })
+          }
           if(enseignant.id===null){
               const message=`L'enseignant n'existe pas.`
               return res.status(404).json({message})
           }
-          const message=`L'enseignant ayant pour id: ${enseignant.id} a été mis à jour `
-          return res.status(201).json({message,data:enseignant})
+            else{
+            const message=`L'enseignant ayant pour id: ${enseignant.id} a été mis à jour `
+            return res.status(201).json({message,data:enseignant})
+          }
       })
   }).catch(error=>{
       const message=`L'enseignant n'a pas pu être modifié. Réessayez dans quelques instants.`
@@ -91,12 +105,13 @@ exports.deleteEnseignant=(req,res)=>{
   Enseignant.findByPk(id).then(enseignant=>{
       if(enseignant===null){
           const message=`L'enseignant n'existe pas.`
-          return res.status(404).json({message})
+           res.status(404).json({message})
+      }else{
+        const message=`L'enseignant ${id} à bien été supprimé`
+        return Enseignant.destroy({ where: { id } }).then(res.status(201).json({message,data:enseignant})) 
       }
-      const message=`L'enseignant ${id} à bien été supprimé`
-      return Enseignant.destroy(id).then(res.status(201).json({message,data:enseignant}))
   }).catch(error=>{
       const message=`L'enseignant n'a pas pu etre supprimé. Réessayez dans quelques instants.`
-      return res.status(500).json({message,data:error})
+       res.status(500).json({message,data:error})
   })
 }

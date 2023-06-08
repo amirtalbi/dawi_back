@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     });
   
     Note.associate = (models) => {
-      Note.belongsTo(models.Eleve, {
+      Note.belongsTo(models.Etudiant, {
         foreignKey: 'etudiantId',
         as: 'etudiant'
       });

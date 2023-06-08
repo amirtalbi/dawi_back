@@ -35,7 +35,7 @@ exports.newEtudiant=(req,res)=>{
                 numero:req.body.numero,
                 numero_etudiant:req.body.numero_etudiant,
                 password:hashedPassword,
-                role:req.body.role
+                role:"etudiant"
             }).then(user=>{
                 if(user===null){
                     const message=`L'utilisateur n'est pas créer.`
@@ -75,14 +75,25 @@ exports.newEtudiant=(req,res)=>{
 
 exports.updateEtudiant=(req,res)=>{
     const id=req.params.id
-    Etudiant.update(req.body,{where:{id:id}}).then(()=>{
+    Etudiant.update({nom:req.body.nom,
+        prenom:req.body.prenom,
+        date_naissance:req.body.date_naissance,
+        email:req.body.email,
+        telephone:req.body.telephone},{where:{id:id}}).then(()=>{
         return Etudiant.findByPk(id).then(etudiant=>{
+            if(!req.body.password){
+                bcrypt.hash(req.body.password,10).then(
+                    hashedPassword=>{
+                        User.update({password:hashedPassword},{where:{id:etudiant.uid}})
+                    })
+            }
             if(etudiant.id===null){
                 const message=`L'étudiant n'existe pas.`
                 return res.status(404).json({message})
+            }else{
+                const message=`L'étudiant ayant pour id: ${etudiant.id} a été mis à jour `
+                return res.status(201).json({message,data:etudiant})    
             }
-            const message=`L'étudiant ayant pour id: ${etudiant.id} a été mis à jour `
-            return res.status(201).json({message,data:etudiant})
         })
     }).catch(error=>{
         const message=`L'étudiant n'a pas pu être modifié. Réessayez dans quelques instants.`
@@ -94,10 +105,12 @@ exports.deleteEtudiant=(req,res)=>{
     Etudiant.findByPk(id).then(etudiant=>{
         if(etudiant===null){
             const message=`L'étudiant n'existe pas.`
-            return res.status(404).json({message})
+             return res.status(404).json({message})
         }
-        const message=`L'étudiant ${id} à bien été supprimé`
-        return Etudiant.destroy(id).then(res.status(201).json({message,data:etudiant}))
+        else{
+            const message=`L'étudiant ${id} à bien été supprimé`
+            return Etudiant.destroy({ where: { id } }).then(res.status(201).json({message,data:etudiant}))
+        }
     }).catch(error=>{
         const message=`L'étudiant n'a pas pu etre supprimé. Réessayez dans quelques instants.`
         return res.status(500).json({message,data:error})

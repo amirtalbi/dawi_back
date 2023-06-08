@@ -1,4 +1,4 @@
-const user = require('../Models/user')
+// const user = require('../Models/user')
 const {User}=require('../db/sequelize')
 const bcrypt = require('bcrypt')
 
@@ -15,8 +15,10 @@ exports.login=(req,res)=>{
                 const message=`Le mot de passe n'est pas valide`
                 return res.status(401).json({message})
             }
-            const message=`L'utilisateur a été récuperé`
-            return res.status(201).json({message,data:user})
+            else{
+                const message=`L'utilisateur a été récuperé`
+                return res.status(201).json({message,data:user})
+            }
         })
     }).catch(error=>{
         const message=`L'utilisateur n'a pas pu etre récuperé. Réessayez dans quelques instants.`
@@ -31,8 +33,10 @@ exports.getOneUser=(req,res)=>{
           const message=`L'utilisateur ${id} n'existe pas`
           return res.status(400).json({message,data:error})
       }
-      const message=`L'utilisateur ${id} a été récuperé`
-      return res.status(201).json({message,data:user})
+      else{
+        const message=`L'utilisateur ${id} a été récuperé`
+        return res.status(201).json({message,data:user})
+      }
   }).catch(error=>{
       const message=`L'utilisateur ${id} n'a pas pu etre récuperé. Réessayez dans quelques instants.`
       return res.status(500).json({message,data:error})
@@ -63,8 +67,10 @@ exports.newUser=(req,res)=>{
                     const message=`L'utilisateur n'est pas créer.`
                     return res.status(404).json({message})
                 }
-                const message=`L'utilisateur a été crée  id:${user.id}`
-                return res.json({message,data:user})
+                else{
+                    const message=`L'utilisateur a été crée  id:${user.id}`
+                    return res.json({message,data:user})
+                }
             }).catch(error=>{
                 const message=`L'utilisateur n'a pas pu être créer. Réessayez dans quelques instants.`
                 return res.status(501).json({message,data:error})
@@ -90,10 +96,12 @@ exports.updateUser=(req,res)=>{
               return User.findByPk(id).then(user=>{
                   if(user.id===null){
                       const message=`L'utilisateur n'existe pas.`
-                      res.status(404).json({message})
+                      return res.status(404).json({message})
                   }
-                  const message=`L'utilisateur ayant pour id: ${user.id} a été mis à jour `
-                  return res.status(201).json({message,data:user})
+                  else{
+                    const message=`L'utilisateur ayant pour id: ${user.id} a été mis à jour `
+                    return res.status(201).json({message,data:user})
+                  }
               })
           }).catch(error=>{
               const message=`L'utilisateur n'a pas pu être modifié. Réessayez dans quelques instants.`
@@ -113,8 +121,10 @@ exports.deleteUser=(req,res)=>{
           const message=`L'utilisateur n'existe pas.`
           return res.status(404).json({message})
       }
-      const message=`L'utilisateur ${id} à bien été supprimé`
-      return User.destroy(id).then(res.status(201).json({message,data:user}))
+      else{
+        const message=`L'utilisateur ${id} à bien été supprimé`
+        return User.destroy({ where: { id } }).then(res.status(201).json({message,data:user}))
+      }
   }).catch(error=>{
       const message=`L'utilisateur n'a pas pu etre supprimé. Réessayez dans quelques instants.`
       return res.status(500).json({message,data:error})

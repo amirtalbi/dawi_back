@@ -1,4 +1,4 @@
-const entreprise = require('../Models/entreprise')
+// const entreprise = require('../Models/entreprise')
 const {Entreprise,User}=require('../db/sequelize')
 const bcrypt = require('bcrypt')
 
@@ -8,9 +8,10 @@ exports.getOneEntreprise=(req,res)=>{
       if(entreprise===null){
           const message=`L'entreprise ${id} n'existe pas`
           return res.status(400).json({message,data:error})
+      }else{
+        const message=`L'entreprise ${id} a été récuperé`
+        return res.status(201).json({message,data:entreprise})
       }
-      const message=`L'entreprise ${id} a été récuperé`
-      return res.status(201).json({message,data:entreprise})
   }).catch(error=>{
       const message=`L'entreprise ${id} n'a pas pu etre récuperé. Réessayez dans quelques instants.`
       return res.status(500).json({message,data:error})
@@ -34,7 +35,7 @@ exports.newEntreprise=(req,res)=>{
                 numero:req.body.numero,
                 numero_etudiant:req.body.numero_etudiant,
                 password:hashedPassword,
-                role:req.body.role
+                role:"entreprise"
             }).then(user=>{
                 if(user===null){
                     const message=`L'utilisateur n'est pas créer.`
@@ -46,7 +47,7 @@ exports.newEntreprise=(req,res)=>{
                         adresse:req.body.adresse,
                         ville:req.body.ville,
                         pays:req.body.pays,
-                        mail:req.body.mail}
+                        email:req.body.email}
                     ).then(entreprise=>{
                     if(entreprise===null){
                         const message=`L'entreprise n'est pas créer.`
@@ -74,14 +75,27 @@ exports.newEntreprise=(req,res)=>{
 
 exports.updateEntreprise=(req,res)=>{
   const id=req.params.id
-  Entreprise.update(req.body,{where:{id:id}}).then(()=>{
+  Entreprise.update({nom:req.body.nom,
+    logo:req.body.logo,
+    adresse:req.body.adresse,
+    ville:req.body.ville,
+    pays:req.body.pays,
+    email:req.body.email},{where:{id:id}}).then(()=>{
       return Entreprise.findByPk(id).then(entreprise=>{
+            if(!req.body.password){
+                bcrypt.hash(req.body.password,10).then(
+                    hashedPassword=>{
+                        User.update({password:hashedPassword},{where:{id:entreprise.uid}})
+                    })
+            }
           if(entreprise.id===null){
               const message=`L'entreprise n'existe pas.`
               return res.status(404).json({message})
+          }else{
+            const message=`L'entreprise ayant pour id: ${entreprise.id} a été mis à jour `
+            return res.status(201).json({message,data:entreprise})
           }
-          const message=`L'entreprise ayant pour id: ${entreprise.id} a été mis à jour `
-          return res.status(201).json({message,data:entreprise})
+
       })
   }).catch(error=>{
       const message=`L'entreprise n'a pas pu être modifié. Réessayez dans quelques instants.`
@@ -95,8 +109,10 @@ exports.deleteEntreprise=(req,res)=>{
           const message=`L'entreprise n'existe pas.`
           return res.status(404).json({message})
       }
-      const message=`L'entreprise ${id} à bien été supprimé`
-      return Entreprise.destroy(id).then(res.status(201).json({message,data:entreprise}))
+      else{
+        const message=`L'entreprise ${id} à bien été supprimé`
+        return Entreprise.destroy({ where: { id } }).then(res.status(201).json({message,data:entreprise}))
+      }
   }).catch(error=>{
       const message=`L'entreprise n'a pas pu etre supprimé. Réessayez dans quelques instants.`
       return res.status(500).json({message,data:error})

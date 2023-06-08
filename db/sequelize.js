@@ -16,7 +16,7 @@ const sequelize=new Sequelize('rl','root','',{
 
 
     const initialisationDb= ()=>{
-      return sequelize.sync({force:true}).then(_=>{
+      return sequelize.sync(/*{force:true}*/).then(_=>{
       console.log('La base de donnée a été initialisée !')
   })
   }
