@@ -1,9 +1,9 @@
 // const offre = require('../Models/offreAlternance')
-const {Offre}=require('../db/sequelize')
+const {OffreAlternance}=require('../db/sequelize')
 
 exports.getOneOffreAlternance=(req,res)=>{
   const id=req.params.id
-  Offre.findByPk(id).then(offre=>{
+  OffreAlternance.findByPk(id).then(offre=>{
       if(offre===null){
           const message=`L'offre ${id} n'existe pas`
           return res.status(400).json({message,data:error})
@@ -19,7 +19,7 @@ exports.getOneOffreAlternance=(req,res)=>{
 }
 
 exports.getAllOffreAlternances=(req,res)=>{
-  Offre.findAll().then(offre=>{
+  OffreAlternance.findAll().then(offre=>{
       const message="Liste des Offres:"
       return res.json({message,data:offre})
   }).catch(error=>{
@@ -29,7 +29,7 @@ exports.getAllOffreAlternances=(req,res)=>{
 }
 
 exports.newOffreAlternance=(req,res)=>{
-  Offre.create(req.body).then(offre=>{
+  OffreAlternance.create(req.body).then(offre=>{
       if(offre===null){
           const message=`L'offre n'est pas créer.`
           return res.status(404).json({message})
@@ -46,7 +46,7 @@ exports.newOffreAlternance=(req,res)=>{
 
 exports.updateOffreAlternance=(req,res)=>{
   const id=req.params.id
-  Offre.update(req.body,{where:{id:id}}).then(()=>{
+  OffreAlternance.update(req.body,{where:{id:id}}).then(()=>{
       return Offre.findByPk(id).then(offre=>{
           if(offre.id===null){
               const message=`L'offre n'existe pas.`
@@ -63,7 +63,7 @@ exports.updateOffreAlternance=(req,res)=>{
 
 exports.deleteOffreAlternance=(req,res)=>{
   const id=req.params.id
-  Offre.findByPk(id).then(offre=>{
+  OffreAlternance.findByPk(id).then(offre=>{
       if(offre===null){
           const message=`L'offre n'existe pas.`
           return res.status(404).json({message})

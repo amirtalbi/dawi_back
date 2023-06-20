@@ -31,7 +31,7 @@ app.use('',userRoutes)
 sequelize.initialisationDb()
 app.use(bodyParser.json());
 app.use(({res})=>{
-    const message="Impossible de trouver la ressource demandé ! Vous pouvez essayer un autre URL."
+    const message="ressource_not_found"
     res.status(404).json({message})
 });
 

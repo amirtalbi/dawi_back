@@ -9,14 +9,14 @@ const SupportCoursModel=require('../Models/supportCours')
 const UserModel=require('../Models/user')
 
 const sequelize=new Sequelize('rl','root','',{
-  host:'localhost',
+  host:'192.168.80.1',
   dialect:'mysql',
     logging: false
   })
 
 
     const initialisationDb= ()=>{
-      return sequelize.sync(/*{force:true}*/).then(_=>{
+      return sequelize.sync().then(_=>{
       console.log('La base de donnée a été initialisée !')
   })
   }

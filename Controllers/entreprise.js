@@ -3,14 +3,14 @@ const {Entreprise,User}=require('../db/sequelize')
 const bcrypt = require('bcrypt')
 
 exports.getOneEntreprise=(req,res)=>{
-  const id=req.params.id
+  const id = req.params.id
   Entreprise.findByPk(id).then(entreprise=>{
       if(entreprise===null){
           const message=`L'entreprise ${id} n'existe pas`
           return res.status(400).json({message,data:error})
       }else{
         const message=`L'entreprise ${id} a été récuperé`
-        return res.status(201).json({message,data:entreprise})
+        return res.status(201).json({message,...entreprise})
       }
   }).catch(error=>{
       const message=`L'entreprise ${id} n'a pas pu etre récuperé. Réessayez dans quelques instants.`
